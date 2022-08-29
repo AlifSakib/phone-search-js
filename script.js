@@ -104,7 +104,7 @@ const displayPhoneDetails = (phone) => {
     mainFeatures: { chipSet },
   } = phone;
 
-  const [faceId] = phone.mainFeatures.sensors;
+  const [a, b, c, d, e, f] = phone.mainFeatures.sensors;
 
   const modalTitle = document.getElementById("exampleModalLabel");
 
@@ -116,7 +116,15 @@ const displayPhoneDetails = (phone) => {
   <p>Release Date : ${releaseDate}</p>
   <h3>Main Features</h3>
   <p>Chipset : ${chipSet}</p>
-  <p>Chipset : ${faceId}</p>
+  <h3>Sensors</h3>
+  <ol>
+  <li>${a}</li>
+  <li>${b}</li>
+  <li>${c}</li>
+  <li>${d}</li>
+  <li>${e}</li>
+  <li>${f}</li>
+  </ol>
   `;
 };
 
