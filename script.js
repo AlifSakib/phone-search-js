@@ -33,10 +33,15 @@ const displayData = (phones, dataLimit) => {
 
         <div class="card h-100">
                 <img src="${image}" class="card-img-top img-fluid p-5" alt="..." />
+
             <div class="card-body">
                 <h5 class="card-title">${name}</h5>
-                <button onclick="phoneDetails('${slug}')" href="#" class="btn btn-primary">Show Details</button>
+
+                <button onclick="phoneDetails('${slug}')" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">
+                Show Details
+                </button>
             </div>
+
         </div>
 
     `;
@@ -58,6 +63,17 @@ document.getElementById("btn-search").addEventListener("click", function () {
   processSearch(10);
 });
 
+//! Search on press Enter
+
+document
+  .getElementById("search-field")
+  .addEventListener("keypress", function (e) {
+    console.log(e.key);
+    if (e.key === "Enter") {
+      processSearch(10);
+    }
+  });
+
 const toggleSpinner = (isLoading) => {
   const spinner = document.getElementById("loader");
 
@@ -72,4 +88,36 @@ document.getElementById("btn-show-all").addEventListener("click", function () {
   processSearch();
 });
 
-// loadData();
+const phoneDetails = async (id) => {
+  const url = `https://openapi.programming-hero.com/api/phone/${id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  displayPhoneDetails(data.data);
+};
+
+const displayPhoneDetails = (phone) => {
+  console.log(phone);
+  const {
+    name,
+    brand,
+    releaseDate,
+    mainFeatures: { chipSet },
+  } = phone;
+
+  const [faceId] = phone.mainFeatures.sensors;
+
+  const modalTitle = document.getElementById("exampleModalLabel");
+
+  modalTitle.innerText = name;
+
+  const phoneDetails = document.getElementById("phone-details");
+  phoneDetails.innerHTML = `
+  <p>Release Date : ${brand}</p>
+  <p>Release Date : ${releaseDate}</p>
+  <h3>Main Features</h3>
+  <p>Chipset : ${chipSet}</p>
+  <p>Chipset : ${faceId}</p>
+  `;
+};
+
+loadData("apple");
